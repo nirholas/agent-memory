@@ -1,0 +1,19 @@
+# @three-ws/agent-memory
+
+> Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.
+
+@three-ws/agent-memory is a JavaScript library from three.ws. Install: `npm install @three-ws/agent-memory`.
+
+## Docs
+
+- [README](https://github.com/nirholas/agent-memory/blob/main/README.md): install, configuration, full reference
+- [Documentation site](https://nirholas.github.io/agent-memory/): the README as a web page
+- [Full text for LLMs](https://nirholas.github.io/agent-memory/llms-full.txt): README inlined
+- [AGENTS.md](https://github.com/nirholas/agent-memory/blob/main/AGENTS.md): guidance for coding agents
+
+## Project
+
+- [Source](https://github.com/nirholas/agent-memory)
+- [npm](https://www.npmjs.com/package/@three-ws/agent-memory)
+- [three.ws](https://three.ws): the platform this is part of
+- [Issues](https://github.com/nirholas/agent-memory/issues)

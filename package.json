@@ -1,0 +1,57 @@
+{
+	"name": "@three-ws/agent-memory",
+	"version": "0.1.2",
+	"description": "Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.",
+	"type": "module",
+	"main": "./src/index.js",
+	"module": "./src/index.js",
+	"types": "./src/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.d.ts",
+			"import": "./src/index.js",
+			"default": "./src/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"test": "node --test test/*.test.js"
+	},
+	"keywords": [
+		"agent-memory",
+		"memory",
+		"embeddings",
+		"semantic-search",
+		"vector-search",
+		"knowledge-graph",
+		"entities",
+		"rag",
+		"llm",
+		"mem0",
+		"letta",
+		"three.ws",
+		"ai-agents"
+	],
+	"author": "nirholas <support@three.ws>",
+	"license": "Apache-2.0",
+	"homepage": "https://nirholas.github.io/agent-memory/",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nirholas/agent-memory.git"
+	},
+	"bugs": {
+		"url": "https://github.com/nirholas/agent-memory/issues"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"dependencies": {},
+	"publishConfig": {
+		"access": "public"
+	}
+}

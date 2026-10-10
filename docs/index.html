@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@three-ws/agent-memory: Persistent, embeddings-backed memory for agents</title>
+<meta name="description" content="Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.">
+<link rel="canonical" href="https://nirholas.github.io/agent-memory/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="three.ws">
+<meta property="og:title" content="@three-ws/agent-memory">
+<meta property="og:description" content="Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.">
+<meta property="og:url" content="https://nirholas.github.io/agent-memory/">
+<meta property="og:image" content="https://nirholas.github.io/agent-memory/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@three-ws/agent-memory">
+<meta name="twitter:description" content="Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.">
+<meta name="twitter:image" content="https://nirholas.github.io/agent-memory/og.png">
+<meta name="keywords" content="agent-memory, memory, embeddings, semantic-search, vector-search, knowledge-graph, entities, rag, llm, mem0, letta, three.ws, ai-agents">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="icon" href="https://three.ws/three-ws-mcp-icon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"@three-ws/agent-memory","description":"Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.","codeRepository":"https://github.com/nirholas/agent-memory","programmingLanguage":"JavaScript","license":"https://spdx.org/licenses/Apache-2.0.html","version":"0.1.2","url":"https://nirholas.github.io/agent-memory/","author":{"@type":"Organization","name":"three.ws","url":"https://three.ws"},"keywords":"agent-memory, memory, embeddings, semantic-search, vector-search, knowledge-graph, entities, rag, llm, mem0, letta, three.ws, ai-agents"}</script>
+<style>:root{--bg:#fff;--fg:#111418;--mut:#586069;--line:#e3e6ea;--acc:#2563eb;--code:#f4f6f8;--card:#fafbfc}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0d10;--fg:#e8eaed;--mut:#9aa3ad;--line:#232830;--acc:#6ea0ff;--code:#14181d;--card:#10141a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--fg)}
+.bar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+.bar nav a{color:var(--mut);text-decoration:none;transition:color .15s}.bar nav a:hover{color:var(--fg)}
+.hero{max-width:1100px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mut);max-width:70ch;font-size:18px;margin:0 0 24px}
+.install{display:flex;align-items:center;gap:8px;max-width:620px;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 14px}
+.install code{flex:1;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+.install button{border:0;background:var(--acc);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui;cursor:pointer;transition:transform .12s,opacity .12s}
+.install button:hover{opacity:.9}.install button:active{transform:scale(.96)}
+.cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.cta a{padding:9px 16px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--fg);transition:border-color .15s,transform .15s}
+.cta a:hover{border-color:var(--acc);transform:translateY(-1px)}.cta a.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.layout{max-width:1100px;margin:0 auto;padding:8px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:76px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+.toc p{margin:0 0 8px;font-weight:700;color:var(--mut);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.toc ul{list-style:none;margin:0;padding:0}.toc li{margin:6px 0}.toc a{color:var(--mut);text-decoration:none}.toc a:hover{color:var(--fg)}
+main{min-width:0;overflow-wrap:anywhere}main pre code{overflow-wrap:normal}main img{max-width:100%;height:auto}
+main h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.anchor{margin-left:-1.1em;padding-right:.4em;text-decoration:none;opacity:0;color:var(--mut)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.15em .35em;border-radius:5px}pre code{background:none;padding:0}
+table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%}th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}th{background:var(--card)}
+blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--mut)}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+.foot-in{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;gap:16px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+<a class="brand" href="https://nirholas.github.io/agent-memory/">@three-ws/agent-memory</a>
+<nav aria-label="Project links"><a href="https://github.com/nirholas/agent-memory">GitHub</a><a href="https://www.npmjs.com/package/@three-ws/agent-memory">npm</a><a href="llms.txt">llms.txt</a><a href="https://three.ws">three.ws</a></nav>
+</div></header>
+<section class="hero">
+<h1>@three-ws/agent-memory</h1>
+<p>Persistent, embeddings-backed memory for agents. Store facts and entities, recall them semantically, and surface a working context — over the three.ws Memory engine.</p>
+<div class="install" role="group" aria-label="Install command"><code>npm install @three-ws/agent-memory</code><button type="button" data-copy="npm install @three-ws/agent-memory">Copy</button></div>
+<div class="cta"><a class="pri" href="https://github.com/nirholas/agent-memory">View on GitHub</a><a href="https://github.com/nirholas/agent-memory/stargazers">Star the repo</a></div>
+</section>
+<div class="layout">
+<main id="content"><p align="center"><strong>Persistent, embeddings-backed memory for agents — store facts and entities, recall them semantically, in one import.</strong></p><p align="center">
+  <a href="https://www.npmjs.com/package/@three-ws/agent-memory"><img alt="npm" src="https://img.shields.io/npm/v/@three-ws/agent-memory?logo=npm&color=cb3837"></a>
+  <a href="https://www.npmjs.com/package/@three-ws/agent-memory"><img alt="downloads" src="https://img.shields.io/npm/dm/@three-ws/agent-memory?color=cb3837"></a>
+  <img alt="license" src="https://img.shields.io/npm/l/@three-ws/agent-memory?color=3b82f6">
+  <img alt="node" src="https://img.shields.io/node/v/@three-ws/agent-memory?color=339933&logo=node.js">
+</p><p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#api">API</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="https://three.ws">three.ws</a>
+</p><hr>
+<blockquote>
+<p><code>@three-ws/agent-memory</code> is the official client for the three.ws <strong>Memory</strong>
+engine — the durable, embeddings-backed memory that gives an agent continuity
+across sessions. Your agent <code>remember()</code>s a fact, then <code>recall()</code>s it later by
+meaning, not keyword: a real semantic search over stored vectors. It wraps the
+live <code>/api/agent-memory</code> and <code>/api/memory/*</code> endpoints — a tiered store
+(working / recall / archival), free-first embeddings, and an auto-mined entity
+graph of the mints, tickers, wallets, people, and strategies your agent has
+seen. It pairs with the talking-agent runtime: the same memories that feed the
+Brain Memory node power your agent&#39;s replies.</p>
+</blockquote>
+<h2 id="why"><a class="anchor" href="#why" aria-label="Link to this section">#</a>Why</h2>
+<p>Every &quot;agent memory&quot; you reach for is either an in-process array that dies with
+the process, or a raw vector DB that leaves embedding, tiering, entity
+extraction, ownership, and the cross-model &quot;different vectors, different space&quot;
+trap to you. Memory is the whole pipeline, done once:</p>
+<ul>
+<li><strong>One import, durable recall.</strong> <code>remember(&#39;User prefers SOL over EVM&#39;)</code> writes
+a memory that&#39;s still there next session — and <code>recall(&#39;which chain?&#39;)</code>
+finds it by meaning.</li>
+<li><strong>Free first.</strong> Embeddings default to NVIDIA NIM&#39;s <code>nv-embedqa-e5-v5</code> (1024-dim,
+free with one key); OpenAI <code>text-embedding-3-small</code> is the paid backstop. No
+vector DB to stand up.</li>
+<li><strong>No fabricated similarity.</strong> Each stored vector is tagged with the model that
+made it; queries are scored strictly within their own space. When no provider
+is configured, recall degrades to substring + salience — never a fake cosine
+score.</li>
+<li><strong>It builds a graph for free.</strong> Every memory is mined (deterministically, no
+LLM call) for the entities it mentions, so you can ask <em>&quot;what does my agent
+remember about this mint?&quot;</em> and walk a co-occurrence graph.</li>
+</ul>
+<p>This is the SDK twin of the three.ws <strong>Memory Studio</strong> — the same engine, exposed
+as plain functions instead of a UI.</p>
+<h2 id="install"><a class="anchor" href="#install" aria-label="Link to this section">#</a>Install</h2>
+<pre><code class="language-bash">npm install @three-ws/agent-memory
+</code></pre>
+<p>Zero runtime dependencies. Works in Node 18+ and the browser (uses <code>fetch</code>).
+Writes require a signed-in three.ws account or a bearer token (see
+<a href="#auth--errors">Auth</a>); reads are owner-only.</p>
+<h2 id="quick-start"><a class="anchor" href="#quick-start" aria-label="Link to this section">#</a>Quick start</h2>
+<p>Bind a client to one agent, then remember and recall:</p>
+<pre><code class="language-js">import { AgentMemory } from &#39;@three-ws/agent-memory&#39;;
+
+const memory = new AgentMemory({ agentId: AGENT_ID, token: process.env.THREE_WS_TOKEN });
+
+await memory.remember(&#39;User prefers Solana over EVM chains&#39;, { tags: [&#39;preference&#39;] });
+
+const hits = await memory.recall(&#39;which blockchain does the user like?&#39;);
+console.log(hits[0].content); // → &quot;User prefers Solana over EVM chains&quot;
+console.log(hits[0].score);   // → 0.83  (real cosine; null on a lexical fallback)
+</code></pre>
+<p>Pin something to the always-in-context working core, then read what the agent
+carries into every reply:</p>
+<pre><code class="language-js">await memory.remember(&#39;Never risk more than 2% per trade&#39;, {
+  tags: [&#39;strategy&#39;],
+  pinned: true, // → working tier, always in context
+});
+
+const ctx = await memory.context();
+console.log(ctx.tokens, &#39;/&#39;, ctx.budget, &#39;tokens in core&#39;); // → 41 / 2000
+</code></pre>
+<p>Walk the entity graph the store mined for you:</p>
+<pre><code class="language-js">const { nodes, edges } = await memory.graph();
+// nodes: [{ kind: &#39;strategy&#39;, label: &#39;Never risk more than 2%…&#39;, mentions: 1 }, …]
+</code></pre>
+<h2 id="api"><a class="anchor" href="#api" aria-label="Link to this section">#</a>API</h2>
+<h3 id="new-agentmemoryoptions"><a class="anchor" href="#new-agentmemoryoptions" aria-label="Link to this section">#</a><code>new AgentMemory(options)</code></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>agentId</code></td>
+<td><code>string</code></td>
+<td>—</td>
+<td><strong>Required.</strong> The agent these memories belong to.</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td><code>string</code></td>
+<td>—</td>
+<td>Bearer token for writes (or use cookie session in-browser).</td>
+</tr>
+<tr>
+<td><code>baseUrl</code></td>
+<td><code>string</code></td>
+<td><code>https://three.ws</code></td>
+<td>Override for self-host / preview.</td>
+</tr>
+<tr>
+<td><code>fetch</code></td>
+<td><code>typeof fetch</code></td>
+<td>global <code>fetch</code></td>
+<td>Inject a custom fetch (e.g. an x402 payer).</td>
+</tr>
+</tbody></table>
+<h3 id="remembercontent-options-promisememory"><a class="anchor" href="#remembercontent-options-promisememory" aria-label="Link to this section">#</a><code>remember(content, options?) → Promise&lt;Memory&gt;</code></h3>
+<p>Store (or upsert) a memory. Wraps <code>POST /api/agent-memory { agentId, entry }</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>&#39;user&#39; | &#39;feedback&#39; | &#39;project&#39; | &#39;reference&#39;</code></td>
+<td><code>&#39;project&#39;</code></td>
+<td>Memory category. Invalid values fall back to <code>project</code>.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td><code>string[]</code></td>
+<td><code>[]</code></td>
+<td>Topic tags — also mined into entity/topic nodes.</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td><code>object</code></td>
+<td><code>{}</code></td>
+<td>Structured fields (<code>{ mint, symbol, wallet }</code>) extracted as entities.</td>
+</tr>
+<tr>
+<td><code>salience</code></td>
+<td><code>number</code></td>
+<td><code>0.5</code></td>
+<td>Importance, <code>0..1</code>. Drives ranking and tier.</td>
+</tr>
+<tr>
+<td><code>pinned</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Pin to the working core (forces <code>tier: &#39;working&#39;</code>).</td>
+</tr>
+<tr>
+<td><code>tier</code></td>
+<td><code>&#39;working&#39; | &#39;recall&#39; | &#39;archival&#39;</code></td>
+<td>auto</td>
+<td>Defaults: pinned → <code>working</code>, low-salience reference → <code>archival</code>, else <code>recall</code>.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>—</td>
+<td>Pass to upsert an existing memory idempotently.</td>
+</tr>
+<tr>
+<td><code>expiresAt</code></td>
+<td><code>number | string</code></td>
+<td>—</td>
+<td>Auto-expiry timestamp.</td>
+</tr>
+</tbody></table>
+<p>Returns the stored <code>Memory</code> (see <a href="#memory-shape">shape</a>). Content is capped at
+10,000 chars. Changing an existing memory&#39;s content resets its vector and mined
+entities, so it re-indexes on the next read.</p>
+<h3 id="recallquery-options-promisememory"><a class="anchor" href="#recallquery-options-promisememory" aria-label="Link to this section">#</a><code>recall(query, options?) → Promise&lt;Memory[]&gt;</code></h3>
+<p>Semantic search over the agent&#39;s memories. Wraps <code>POST /api/memory/search</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>topK</code></td>
+<td><code>number</code></td>
+<td><code>8</code></td>
+<td>Max results, clamped <code>1..50</code>.</td>
+</tr>
+<tr>
+<td><code>minScore</code></td>
+<td><code>number</code></td>
+<td><code>0.25</code></td>
+<td>Min cosine similarity, <code>0..1</code>.</td>
+</tr>
+<tr>
+<td><code>tiers</code></td>
+<td><code>string[]</code></td>
+<td>all</td>
+<td>Restrict to e.g. <code>[&#39;working&#39;, &#39;recall&#39;]</code>.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>string</code></td>
+<td>all</td>
+<td>Restrict to one memory type.</td>
+</tr>
+</tbody></table>
+<p>Each result carries a <code>score</code> (cosine, 4-dp) and <code>match</code> of <code>&#39;semantic&#39;</code> or
+<code>&#39;lexical&#39;</code>. Results are semantic-first, then back-filled with salience-ranked
+substring hits so a query is never empty just because a provider is down.
+Recalling a memory bumps its <code>accessCount</code> and salience slightly — the
+recency/reinforcement loop the tiers rely on.</p>
+<h3 id="entitiesoptions-promiseentity"><a class="anchor" href="#entitiesoptions-promiseentity" aria-label="Link to this section">#</a><code>entities(options?) → Promise&lt;Entity[]&gt;</code></h3>
+<p>The knowledge-graph nodes the agent&#39;s memories mention. Convenience over
+<code>graph()</code> — returns <code>nodes</code> ranked by mention count.</p>
+<h3 id="graph-promise-nodes-edges-stats"><a class="anchor" href="#graph-promise-nodes-edges-stats" aria-label="Link to this section">#</a><code>graph() → Promise&lt;{ nodes, edges, stats }&gt;</code></h3>
+<p>The full temporal knowledge graph. Wraps <code>GET /api/memory/graph</code>. <code>nodes</code> are
+entities (<code>kind</code> ∈ <code>mint | ticker | wallet | person | strategy | topic</code>);
+<code>edges</code> are co-occurrence links weighted by how often two entities share a
+memory. Lazily mines any not-yet-processed memories on read.</p>
+<h3 id="memoriesforentityid-options-promisememory"><a class="anchor" href="#memoriesforentityid-options-promisememory" aria-label="Link to this section">#</a><code>memoriesFor(entityId, options?) → Promise&lt;Memory[]&gt;</code></h3>
+<p>Memories that mention a given entity node. Wraps
+<code>GET /api/memory/graph?entityId=</code>. Powers node drilldown (&quot;what does my agent
+remember about this mint?&quot;).</p>
+<h3 id="context-promisecontext"><a class="anchor" href="#context-promisecontext" aria-label="Link to this section">#</a><code>context() → Promise&lt;Context&gt;</code></h3>
+<p>The &quot;in-context now&quot; working set: pinned + working-tier memories with a live
+token budget. Wraps <code>GET /api/memory/context</code>.</p>
+<pre><code class="language-ts">type Context = {
+  entries: Memory[];
+  tokens: number;       // estimated tokens in the working core
+  budget: number;       // 2000 — the working-core token budget
+  overBudget: boolean;  // tokens &gt; budget
+  counts: { total, working, recall, archival, embedded };
+};
+</code></pre>
+<h3 id="listoptions-promisememory"><a class="anchor" href="#listoptions-promisememory" aria-label="Link to this section">#</a><code>list(options?) → Promise&lt;Memory[]&gt;</code></h3>
+<p>Every memory for the agent (newest, salience-first). Wraps
+<code>GET /api/agent-memory?agentId=</code>. Options: <code>type</code>, <code>since</code> (ms), <code>limit</code>
+(≤ 500, default 200).</p>
+<h3 id="curation"><a class="anchor" href="#curation" aria-label="Link to this section">#</a>Curation</h3>
+<p>Owner-only edits over <code>POST /api/memory/curate</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Op</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pin(id)</code> / <code>unpin(id)</code></td>
+<td><code>pin</code> / <code>unpin</code></td>
+<td>Move in/out of the working core.</td>
+</tr>
+<tr>
+<td><code>retier(id, tier)</code></td>
+<td><code>tier</code></td>
+<td>Set <code>working | recall | archival</code>.</td>
+</tr>
+<tr>
+<td><code>setSalience(id, n)</code></td>
+<td><code>salience</code></td>
+<td>Set importance, <code>0..1</code>.</td>
+</tr>
+<tr>
+<td><code>edit(id, { content?, tags? })</code></td>
+<td><code>edit</code></td>
+<td>Re-embeds + re-mines on content change.</td>
+</tr>
+<tr>
+<td><code>merge([target, ...dupes])</code></td>
+<td><code>merge</code></td>
+<td>Fold duplicates into one; re-indexes.</td>
+</tr>
+<tr>
+<td><code>forget(id)</code></td>
+<td><code>forget</code></td>
+<td>Delete a memory.</td>
+</tr>
+</tbody></table>
+<h3 id="memory-shape"><a class="anchor" href="#memory-shape" aria-label="Link to this section">#</a>Memory shape</h3>
+<pre><code class="language-ts">type Memory = {
+  id: string;
+  type: &#39;user&#39; | &#39;feedback&#39; | &#39;project&#39; | &#39;reference&#39;;
+  content: string;
+  tags: string[];
+  context: object;
+  salience: number;            // 0..1
+  tier: &#39;working&#39; | &#39;recall&#39; | &#39;archival&#39;;
+  pinned: boolean;
+  embedder: string | null;     // e.g. &quot;nvidia/nv-embedqa-e5-v5@1024&quot;
+  hasEmbedding: boolean;
+  accessCount: number;
+  tokens: number;              // ~chars/4
+  createdAt: number; updatedAt: number;
+  lastAccessedAt: number | null; expiresAt: number | null;
+  // recall() only:
+  score?: number | null;       // cosine, or null for a lexical hit
+  match?: &#39;semantic&#39; | &#39;lexical&#39;;
+};
+</code></pre>
+<h2 id="how-it-works"><a class="anchor" href="#how-it-works" aria-label="Link to this section">#</a>How it works</h2>
+<p>Three layers turn a string into durable, recall-able memory — a write path, a
+read-triggered indexing pass, and a query path:</p>
+<pre><code> remember(text) ──▶ POST /api/agent-memory ──▶ agent_memories (Postgres)
+                                                     │
+        read of recall()/graph() triggers lazy indexing (best-effort, bounded)
+                                                     ▼
+        ┌──────────────── embed ────────────────┐   ┌──────── mine ────────┐
+        │ NIM nv-embedqa-e5-v5 @1024 (free)      │   │ deterministic entity │
+        │  → OpenAI text-embedding-3-small @256  │   │ extraction (no LLM)  │
+        │ vector tagged with its embedder        │   │ → entity nodes+links │
+        └────────────────────┬───────────────────┘   └──────────┬──────────┘
+                             ▼                                   ▼
+ recall(query) ──▶ cosine within the SAME vector space ──▶ ranked Memory[]
+                   (lexical + salience fallback)        graph(): nodes + edges
+</code></pre>
+<ul>
+<li><strong>Tiers (Letta/MemGPT model).</strong> <code>working</code> is the small, always-in-context core
+(pinned + active rules), token-budgeted at <strong>2000</strong> tokens. <code>recall</code> is recent,
+searchable interactions. <code>archival</code> is the long-term store. A new memory&#39;s tier
+is chosen for you unless you set it.</li>
+<li><strong>Free-first embeddings.</strong> New writes embed with NVIDIA NIM <code>nv-embedqa-e5-v5</code>
+(1024-dim, free with one <code>NVIDIA_API_KEY</code>); OpenAI <code>text-embedding-3-small</code> at
+256 dims is the paid backstop. Embedding happens lazily on read, in bounded
+batches, so no write blocks on a provider.</li>
+<li><strong>One space, never crossed.</strong> Every vector is stored tagged with the exact
+model that produced it. A query is embedded once per stored space and cosine
+runs strictly within each — vectors of different dimensionality score <code>0</code>, never
+a plausible-looking garbage similarity.</li>
+<li><strong>Auto-mined graph.</strong> Each memory is pattern-matched (deterministic, dependency-
+free) for mints, <code>$TICKER</code> cashtags, wallet addresses, <code>@handles</code>, and trading
+strategies. Entities become graph nodes; co-occurrence within a memory becomes
+a weighted edge.</li>
+</ul>
+<h2 id="auth-errors"><a class="anchor" href="#auth-errors" aria-label="Link to this section">#</a>Auth &amp; errors</h2>
+<p>Reads are <strong>owner-only</strong>: anonymous or non-owner requests get an empty result
+(an empty array / zeroed context), never a leak and never a 401 that spams a
+public embed console. Writes require auth and surface as a thrown
+<code>MemoryError</code> with a <code>code</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>code</code></th>
+<th>HTTP</th>
+<th>Meaning</th>
+<th>Recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>unauthorized</code></td>
+<td>401</td>
+<td>Write with no session / token.</td>
+<td>Pass a <code>token</code>, or sign in.</td>
+</tr>
+<tr>
+<td><code>forbidden</code></td>
+<td>403</td>
+<td>Agent isn&#39;t yours.</td>
+<td>Use an <code>agentId</code> you own.</td>
+</tr>
+<tr>
+<td><code>not_found</code></td>
+<td>404</td>
+<td>Agent or memory doesn&#39;t exist.</td>
+<td>Check the id.</td>
+</tr>
+<tr>
+<td><code>id_conflict</code></td>
+<td>409</td>
+<td>Upsert id already used by another agent.</td>
+<td>Omit <code>id</code> to mint a new one.</td>
+</tr>
+<tr>
+<td><code>validation_error</code></td>
+<td>400</td>
+<td>Missing <code>agentId</code> / <code>content</code> / bad field.</td>
+<td>Fix the input.</td>
+</tr>
+</tbody></table>
+<p>Browser writes also need a CSRF token (handled automatically by the three.ws
+session cookie flow); server-to-server calls authenticate with a bearer
+<code>token</code>.</p>
+<h2 id="examples"><a class="anchor" href="#examples" aria-label="Link to this section">#</a>Examples</h2>
+<p><strong>Agent loop — remember every turn, recall before replying:</strong></p>
+<pre><code class="language-js">const memory = new AgentMemory({ agentId, token });
+
+async function onUserMessage(text) {
+  const recalled = await memory.recall(text, { topK: 5 });
+  const reply = await llm(text, { memories: recalled.map((m) =&gt; m.content) });
+  await memory.remember(`User said: ${text}\nAgent: ${reply}`, { type: &#39;user&#39; });
+  return reply;
+}
+</code></pre>
+<p><strong>Record a trade with structured context — it extracts the entities for you:</strong></p>
+<pre><code class="language-js">await memory.remember(&#39;Sniped a fresh launch, took profit at 3x&#39;, {
+  tags: [&#39;trade&#39;, &#39;lesson&#39;],
+  salience: 0.8,
+  context: { mint: &#39;THREEsynthetic1111111111111111111111111111&#39;, symbol: &#39;$THREE&#39; },
+});
+
+const { nodes } = await memory.graph(); // mint + ticker nodes now linked
+</code></pre>
+<p><strong>Curate the working core so it stays under budget:</strong></p>
+<pre><code class="language-js">const ctx = await memory.context();
+if (ctx.overBudget) {
+  // demote the least-salient working memory to recall
+  const weakest = ctx.entries.sort((a, b) =&gt; a.salience - b.salience)[0];
+  await memory.retier(weakest.id, &#39;recall&#39;);
+}
+</code></pre>
+<h2 id="related"><a class="anchor" href="#related" aria-label="Link to this section">#</a>Related</h2>
+<ul>
+<li><a href="https://www.npmjs.com/package/@three-ws/forge"><code>@three-ws/forge</code></a> — give your remembering agent a body: text/image → rig-ready 3D GLB.</li>
+<li><a href="https://www.npmjs.com/package/@three-ws/avatar"><code>@three-ws/avatar</code></a> — render and animate that agent in the browser.</li>
+<li><a href="https://www.npmjs.com/package/@three-ws/x402-fetch"><code>@three-ws/x402-fetch</code></a> — inject a paying <code>fetch</code> for paid three.ws lanes.</li>
+</ul>
+<hr>
+<p align="center">Built by <a href="https://three.ws">three.ws</a> · The only coin is <a href="https://three.ws">$THREE</a></p>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#why">Why</a></li><li><a href="#install">Install</a></li><li><a href="#quick-start">Quick start</a></li><li><a href="#api">API</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#auth-errors">Auth &amp; errors</a></li><li><a href="#examples">Examples</a></li><li><a href="#related">Related</a></li></ul></nav>
+</div>
+<footer><div class="foot-in"><span>Apache-2.0 licensed</span><a href="https://github.com/nirholas/agent-memory/issues">Issues</a><a href="https://github.com/nirholas/agent-memory/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/nirholas/agent-memory/security/policy">Security</a><a href="https://three.ws">Part of three.ws</a></div></footer>
+<script>document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+var t=b.getAttribute('data-copy');var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}})});</script>
+</body>
+</html>
